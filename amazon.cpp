@@ -9,6 +9,7 @@
 #include "db_parser.h"
 #include "product_parser.h"
 #include "util.h"
+#include "mydatastore.h"
 
 using namespace std;
 struct ProdNameSorter {
@@ -29,7 +30,7 @@ int main(int argc, char* argv[])
      * Declare your derived DataStore object here replacing
      *  DataStore type to your derived type
      ****************/
-    DataStore ds;
+    MyDataStore ds;
 
 
 
@@ -90,6 +91,40 @@ int main(int argc, char* argv[])
                 hits = ds.search(terms, 1);
                 displayProducts(hits);
             }
+            else if(cmd == "ADD"){
+                string username;
+                int hitNumber;
+
+                if(!(ss >> username >> hitNumber)){
+                    cout << "Invalid request" << endl;
+                }else if(!ds.hasUser(username)){
+                    cout << "Invalid request" << endl;
+                }else if(hitNumber < 1 || hitNumber > static_cast<int>(hits.size())){
+                    cout << "Invalid request" << endl;
+                }else{
+                    ds.addToCart(username, hits[hitNumber - 1]);
+                }
+            }
+            else if(cmd == "VIEWCART"){
+                string username;
+                if(!(ss >> username)){
+                    cout << "Invalid username" << endl;
+                }
+                else if(!ds.viewCart(username)){
+                    cout << "Invalid username" << endl;
+                }
+            }
+            else if(cmd == "BUYCART"){
+                string username;
+
+                if(!(ss >> username)){
+                    cout << "Invalid username" << endl;
+                }
+                else if(!ds.buyCart(username)){
+                    cout << "Invalid username" << endl;
+                }
+            }
+
             else if ( cmd == "QUIT") {
                 string filename;
                 if(ss >> filename) {
@@ -100,9 +135,6 @@ int main(int argc, char* argv[])
                 done = true;
             }
 	    /* Add support for other commands here */
-
-
-
 
             else {
                 cout << "Unknown command" << endl;
@@ -128,3 +160,4 @@ void displayProducts(vector<Product*>& hits)
         resultNo++;
     }
 }
+
