@@ -30,7 +30,7 @@ std::set<std::string> parseStringToWords(string rawWords)
         }
     }
 
-    if(currentWord.size() >= 2){
+    if(word.size() >= 2){
         words.insert(word);
     }
 
