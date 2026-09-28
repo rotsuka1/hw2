@@ -22,9 +22,10 @@ std::set<std::string> parseStringToWords(string rawWords)
         if(std::isspace(static_cast<unsigned char>(c)) || std::ispunct(static_cast<unsigned char>(c))){
             if(word.size() >= 2){
                 words.insert(word);
-            }else{
-                word = "";
             }
+            
+            word = "";
+            
         }else{
             word += c;
         }
